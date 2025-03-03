@@ -3,7 +3,6 @@
     "name": "wattpoint",
     "slug": "wattpoint",
     "version": "1.0.0",
-
     "scheme": "wattpoint",
     "web": {
       "bundler": "metro",
@@ -21,28 +20,33 @@
     ],
     "experiments": {
       "typedRoutes": true,
-
       "tsconfigPaths": true
     },
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anilyavas.wattpoint"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.anilyavas.wattpoint"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6403be78-666b-4881-963f-10cc4deeb942"
       }
     }
   }
