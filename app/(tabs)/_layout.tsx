@@ -10,6 +10,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: 'yellow',
         tabBarStyle: { backgroundColor: 'black' },
         tabBarShowLabel: false,
+        headerShown: false,
       }}>
       <Tabs.Screen
         name="index"
