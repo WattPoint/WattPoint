@@ -40,12 +40,10 @@ export default function Home() {
         setLocation(coords);
 
         const response = await fetch(
-          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&rankby=distance&keyword=EV+charging|electric+charging|Tesla+charger|fast+charging&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&rankby=distance&keyword=EV+charging|electric+charging|Tesla+charger|fast+charging|Eşarj+Zes+Trugo+Astor&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
         );
         const data = await response.json();
-        console.log('API Response:', JSON.stringify(data, null, 2));
         setStations(data.results);
-        console.log('Charging Stations:', JSON.stringify(data, null, 2));
       } catch (error) {
         console.log('Error fetching location:', error);
       } finally {
@@ -87,6 +85,7 @@ export default function Home() {
           )}
           {stations.map((station, index) => (
             <Marker
+              key={index}
               coordinate={{
                 latitude: station.geometry.location.lat,
                 longitude: station.geometry.location.lng,
