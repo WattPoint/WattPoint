@@ -40,7 +40,7 @@ export default function Home() {
         setLocation(coords);
 
         const response = await fetch(
-          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&radius=5000&keyword=charging%20station&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&rankby=distance&keyword=EV+charging|electric+charging|Tesla+charger|fast+charging&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
         );
         const data = await response.json();
         console.log('API Response:', JSON.stringify(data, null, 2));
