@@ -6,7 +6,18 @@ import MapView, { Marker } from 'react-native-maps';
 
 export default function Home() {
   const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
-  const [stations, setStations] = useState([]);
+  interface Station {
+    geometry: {
+      location: {
+        lat: number;
+        lng: number;
+      };
+    };
+    name: string;
+    vicinity: string;
+  }
+
+  const [stations, setStations] = useState<Station[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,9 +40,10 @@ export default function Home() {
         setLocation(coords);
 
         const response = await fetch(
-          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&radius=5000&type=charging_station&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&radius=5000&keyword=charging%20station&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
         );
         const data = await response.json();
+        console.log('API Response:', JSON.stringify(data, null, 2));
         setStations(data.results);
         console.log('Charging Stations:', JSON.stringify(data, null, 2));
       } catch (error) {
