@@ -6,12 +6,11 @@ import MapView, { Marker } from 'react-native-maps';
 
 export default function Home() {
   const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
+  const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const getLocationPermission = async () => {
+    const getLocationAndStations = async () => {
       setLoading(true);
       try {
         const { status } = await Location.getForegroundPermissionsAsync();
@@ -27,23 +26,22 @@ export default function Home() {
         const { coords } = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.High,
         });
+        setLocation(coords);
 
-        if (isMounted) {
-          setLocation(coords);
-          console.log('Updated location:', coords);
-        }
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${coords.latitude},${coords.longitude}&radius=5000&type=charging_station&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
+        );
+        const data = await response.json();
+        setStations(data.results);
+        console.log('Charging Stations:', JSON.stringify(data, null, 2));
       } catch (error) {
         console.log('Error fetching location:', error);
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
     };
 
-    getLocationPermission();
-
-    return () => {
-      isMounted = false;
-    };
+    getLocationAndStations();
   }, []);
 
   if (loading) return <ActivityIndicator size="large" />;
@@ -75,6 +73,17 @@ export default function Home() {
               pinColor="green"
             />
           )}
+          {stations.map((station, index) => (
+            <Marker
+              coordinate={{
+                latitude: station.geometry.location.lat,
+                longitude: station.geometry.location.lng,
+              }}
+              title={station.name}
+              description={station.vicinity}
+              pinColor="red"
+            />
+          ))}
         </MapView>
       </SafeAreaView>
       <StatusBar style="light" />
